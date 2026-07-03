@@ -44,7 +44,20 @@ function Signup() {
                     Sign In
                 </Link>
             </p>
-            {error && <p className="text-red-500 mt-6 text-sm text-center bg-red-500/10 border border-red-500/20 py-2 rounded-lg">{error}</p>}
+            {error && (
+                <div className="mt-6 text-sm text-center bg-red-500/10 border border-red-500/20 p-4 rounded-xl flex flex-col gap-2">
+                    <p className="text-red-500 font-semibold">{error}</p>
+                    {error.toLowerCase().includes("failed to fetch") && (
+                        <div className="text-xs text-slate-400 text-left space-y-1.5 mt-2 border-t border-red-500/10 pt-2.5">
+                            <p className="font-bold text-slate-300">💡 Deployed Link Troubleshooting:</p>
+                            <ul className="list-disc pl-4 space-y-1">
+                                <li><strong>Environment Variables</strong>: Ensure <code>VITE_APPWRITE_URL</code> and <code>VITE_APPWRITE_PROJECT_ID</code> are configured in your Render/Vercel dashboard environment settings.</li>
+                                <li><strong>CORS Platform Permissions</strong>: Go to your Appwrite Console &rarr; click Project &rarr; Settings &rarr; Platforms (Web), and add your deployed domain (e.g. <code>{window.location.hostname}</code> or your onrender.com host) as a platform to authorize requests.</li>
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            )}
 
             <form onSubmit={handleSubmit(create)} className="mt-6">
                 <div className='space-y-5'>

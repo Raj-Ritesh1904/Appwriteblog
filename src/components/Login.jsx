@@ -5,6 +5,7 @@ import {Button, Input, Logo} from "./index"
 import {useDispatch} from "react-redux"
 import authService from "../appwrite/auth"
 import {useForm} from "react-hook-form"
+import conf from "../conf/conf"
 
 function Login() {
     const navigate = useNavigate()
@@ -48,11 +49,17 @@ function Login() {
                 <div className="mt-6 text-sm text-center bg-red-500/10 border border-red-500/20 p-4 rounded-xl flex flex-col gap-2">
                     <p className="text-red-500 font-semibold">{error}</p>
                     {error.toLowerCase().includes("failed to fetch") && (
-                        <div className="text-xs text-slate-400 text-left space-y-1.5 mt-2 border-t border-red-500/10 pt-2.5">
+                        <div className="text-xs text-slate-400 text-left space-y-2 mt-2 border-t border-red-500/10 pt-2.5">
                             <p className="font-bold text-slate-300">💡 Deployed Link Troubleshooting:</p>
-                            <ul className="list-disc pl-4 space-y-1">
-                                <li><strong>Environment Variables</strong>: Ensure <code>VITE_APPWRITE_URL</code> and <code>VITE_APPWRITE_PROJECT_ID</code> are configured in your Render/Vercel dashboard environment settings.</li>
-                                <li><strong>CORS Platform Permissions</strong>: Go to your Appwrite Console &rarr; click Project &rarr; Settings &rarr; Platforms (Web), and add your deployed domain (e.g. <code>{window.location.hostname}</code> or your onrender.com host) as a platform to authorize requests.</li>
+                            <ul className="list-disc pl-4 space-y-2">
+                                <li><strong>Environment Configuration Status</strong>:
+                                    <div className="pl-4 mt-1 font-mono text-[10px] space-y-0.5">
+                                        <div>URL: <span className={conf.appwriteUrl ? "text-emerald-400" : "text-amber-400"}>{conf.appwriteUrl || "(NOT CONFIGURED / BLANK)"}</span></div>
+                                        <div>Project ID: <span className={conf.appwriteProjectId ? "text-emerald-400" : "text-amber-400"}>{conf.appwriteProjectId || "(NOT CONFIGURED / BLANK)"}</span></div>
+                                    </div>
+                                    {!conf.appwriteUrl && <p className="text-amber-500 text-[10px] mt-1">⚠️ Environment variables are missing in your Vercel/Render dashboard settings.</p>}
+                                </li>
+                                <li><strong>CORS Platform Permissions</strong>: Go to your Appwrite Console &rarr; click Project &rarr; Settings &rarr; Platforms (Web), and add your deployed domain: <code>{window.location.hostname}</code> as a platform to authorize requests.</li>
                             </ul>
                         </div>
                     )}
